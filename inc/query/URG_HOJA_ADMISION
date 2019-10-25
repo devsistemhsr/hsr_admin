@@ -1,0 +1,28 @@
+SELECT     URG_IN_PACIENTE.NoUrgencia AS NoAdmision, CONVENIO.nombre AS Empresa, [CATEGORIA TARIFA].descripción AS Tarifa, 
+                      BENEFICIARIO.[Primer Nombre] + N' ' + BENEFICIARIO.[Segundo Nombre] + N' ' + BENEFICIARIO.[Primer Apellido] + N' ' + BENEFICIARIO.[Segundo Apellido]
+                       AS Paciente, BENEFICIARIO.[Tipo de Documento] + N' ' + BENEFICIARIO.[Documento de Identidad] AS Doc, 
+                      BENEFICIARIO.[Fecha Nacimiento] AS FechaNacimiento, SEXO.Sexo, BENEFICIARIO.Dirección AS Direccion, BENEFICIARIO.Teléfono AS Telefono, 
+                      URG_IN_PACIENTE.Autorizacion, URG_IN_PACIENTE.AutorizadaPor, 
+                      URG_IN_PACIENTE.Nombres + N' ' + URG_IN_PACIENTE.Apellidos AS AcomPaciente, 
+                      URG_IN_PACIENTE.TpDocResponsable + N' ' + URG_IN_PACIENTE.DocumentoResponsable AS AcomDoc, 
+                      URG_IN_PACIENTE.Direccion AS AcomDireccion, URG_IN_PACIENTE.Telefono AS AcomTelefono, URG_IN_PACIENTE.RegistradoPor AS RealizadoPor, 
+                      URG_IN_PACIENTE.FechaHoraregistro AS FechaRealizado, ESTRATO.descripción AS Estrato, PARENTESCO.Descripción AS Parentesco, 'COPIA' AS TipoCopia,
+		(Select MUN.Municipio + ' - '+ (Select Dpto.Departamento FROM SIIS_DEPARTAMENTO Dpto WHERE Dpto.CodDpto=MUN.CodDepartamento) From SIIS_MUNICIPIO MUN Where MUN.CodDepartamento=BENEFICIARIO.Departamento and MUN.CodMunicipio=BENEFICIARIO.Municipio) as MunicipioPx,
+	       (SELECT     LTRIM(M.[Nombres] + ' ' + LTRIM(M.[Primer Apellido] + ' ' + LTRIM(M.[Segundo Apellido])))
+                            FROM          [a Medico] M
+                            WHERE      [número de Registro] = URG_IN_PACIENTE.Medicotratante) AS MedicoTratante, 
+  	     (SELECT  SIIS_DIAGNOSTICO.Diagnostico
+		FROM SIIS_DIAGNOSTICO
+		WHERE CodigoDiagnostico = URG_IN_PACIENTE.DiagnosticoIngreso
+		) As DiagnosticoIngreso,URG_IN_PACIENTE.FechaHoraLlegada, URG_IN_PACIENTE.SemanasCotizadas
+FROM         dbo.[b BENEFICIO] BENEFICIO INNER JOIN
+                      dbo.[a EMPRESA/EPS] CONVENIO ON BENEFICIO.[empresa/eps] = CONVENIO.nit INNER JOIN
+                      dbo.URG_INGRESO_PACIENTE URG_IN_PACIENTE ON BENEFICIO.código = URG_IN_PACIENTE.Beneficio INNER JOIN
+                      dbo.[a PACIENTE] BENEFICIARIO ON URG_IN_PACIENTE.SecuenciaIngreso = BENEFICIARIO.[Secuencia Ingreso] AND 
+                      BENEFICIO.beneficiario = BENEFICIARIO.[Secuencia Ingreso] INNER JOIN
+                      dbo.[p CATEGORIA TARIFABLE] [CATEGORIA TARIFA] ON CONVENIO.CategoriadeTarifa = [CATEGORIA TARIFA].código INNER JOIN
+                      dbo.[a CENTRO DE SERVICIO] CENTRO ON URG_IN_PACIENTE.Centro = CENTRO.código INNER JOIN
+                      dbo.[a PARENTESCO] PARENTESCO ON BENEFICIO.parentesco = PARENTESCO.Código INNER JOIN
+                      dbo.SIIS_SEXO SEXO ON BENEFICIARIO.Sexo = SEXO.CodSexo INNER JOIN
+                      dbo.[a NIVEL SOCIOECONOMICO] ESTRATO ON BENEFICIO.nivel = ESTRATO.código
+WHERE URG_IN_PACIENTE.NoUrgencia = xxxxx

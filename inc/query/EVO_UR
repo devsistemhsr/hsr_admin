@@ -1,0 +1,9 @@
+select
+p.Pregunta,h.Respuesta,
+m.[documento de identidad] as IdMedico,
+concat(m.nombres,' ',m.[primer apellido],' ',m.[segundo apellido]) as NameMedico,m.[número de registro] as RegMedico
+from HIST_MOVIMIENTO_DETA h
+inner join HIST_PREGUNTA p on h.CodPregunta=p.CodPregunta
+inner join HIST_MOVIMIENTO_ENCA e on h.NoFolio=e.NoFolio
+inner join [a MEDICO] m on e.Medico=m.[número de registro]
+where h.NoFolio=xxxxx and Respuesta is not null

@@ -1,0 +1,54 @@
+select
+concat(ltrim(rtrim(p.ppellido)),' ',
+ltrim(rtrim(p.sapellido)),' ',
+ltrim(rtrim(p.nombre)),' ',
+ltrim(rtrim(p.snombre)))
+as NAME_PAC,
+
+concat(ltrim(rtrim(p.ppellido)),' ',
+ltrim(rtrim(p.sapellido))) as APES_PAC,
+concat(
+ltrim(rtrim(p.nombre)),' ',
+ltrim(rtrim(p.snombre))) as NOM_PAC,
+
+concat(ltrim(rtrim(p.tipo_c)),' ',ltrim(rtrim(p.codigo)))
+as ID_PAC,
+convert(date,p.fecha_nac) as NAC_PAC,
+ltrim(rtrim(p.direccion)) as DIR_PAC,
+ltrim(rtrim(p.barrio)) as BAR_PAC,
+ltrim(rtrim(p.telefono)) as TEL_PAC,
+ltrim(rtrim(d.nommun)) as MUN_PAC,
+'URGENCIAS' AS AMBITO,
+'URGENCIAS' as SERVICIO,
+'' AS PAC_HAB,
+ltrim(rtrim(x.medico)) as MEDICO,
+ltrim(rtrim(x.autoriza)) as AUT,
+concat(CONVERT(varchar,x.fecha_ing,103),' ',x.hora_ing) as INI,
+concat(CONVERT(varchar,x.fecha_sal,103),' ',x.hora_sal) as FIN,
+ltrim(rtrim(substring(a.plano,3,20))) as REG,
+ltrim(rtrim(a.plano)) as REG_PAC,
+p.nivel_afil as NIV_PAC,
+(
+ CASE p.contribucion
+ WHEN 1 THEN 'Contribuyente'
+ WHEN 2 THEN 'Beneficiario'
+ END
+) as CNT_PAC,
+(
+ CASE p.sexo
+ WHEN 1 THEN 'Masculino'
+ WHEN 2 THEN 'Femenino'
+ END
+) as SEX,
+p.ocupacion as OCU_PAC,
+p.acompañante as NAME_AC,
+p.telacompañante as TEL_AC,
+p.parentesco as PAR_AC,
+p.responsable as NAME_RS,
+p.telresponsable as TEL_RS,
+p.parentesco as PAR_RS
+from urgencia012019 x
+inner join paciente p on x.codigo=p.codigo
+inner join departamentos d on concat(d.codigo,d.codmun) = concat(p.cod_depart,p.cod_mun)
+inner join admin a on x.cod_admin=a.codigo
+where x.historia=

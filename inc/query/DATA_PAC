@@ -1,0 +1,18 @@
+select
+P.[Tipo de Documento] + ' ' + P.[Documento de Identidad] As Ident,
+LTRIM(P.[Primer Nombre] +  ' ' + LTRIM(P.[Segundo Nombre] + ' ' + LTRIM(P.[Primer Apellido] + ' ' + LTRIM(P.[Segundo Apellido])))) As Nombre,
+P.[Fecha Nacimiento] as FNAC,
+(
+	CASE [Sexo]
+	WHEN 'M' THEN 'Masculino'
+	WHEN 'F' THEN 'Femenino'
+	END
+) as Sexo,
+m.[Municipio] as Ciudad,P.[Dirección] as Direccion ,P.[Teléfono] as Telefono,
+e.nombre as EPS,
+u.Nombres + N' ' + u.Apellidos AS Acomp,u.FechaHoraLlegada as FATEN
+from URG_INGRESO_PACIENTE u
+inner join [a PACIENTE] P on u.SecuenciaIngreso=p.[Secuencia Ingreso]
+inner join SIIS_MUNICIPIO m on P.Departamento=m.CodDepartamento and P.Municipio=m.CodMunicipio
+inner join [a EMPRESA/EPS] e on u.Empresa=e.nit
+where u.NoUrgencia=xxxxx

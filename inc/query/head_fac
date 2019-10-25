@@ -1,0 +1,15 @@
+select
+id as ID_FAC,
+tipo_historia as TIPO_HIS,
+fecha_prec as FEC_FAC,
+fecha_venc as VEN_FAC,
+ltrim(rtrim(nombre)) as NAME_EPS,
+ltrim(rtrim(codigo)) as NIT_EPS,
+ltrim(rtrim(codrips)) as COD_EPS,
+ltrim(rtrim(direccion)) as DIR_EPS,
+ltrim(rtrim(telefono)) as TEL_EPS,
+convert(int,vlr_fact) as TOT_FAC,
+convert(int,coopago) as COP_FAC,
+historia AS NRO_HIS,año as ANO_HIS,convenio as CONV
+from factura01
+where numero=

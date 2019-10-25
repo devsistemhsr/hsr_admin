@@ -1,0 +1,10 @@
+DECLARE @URG int
+SET @URG=xxxxx
+select
+d.CodPregunta,e.Pregunta,d.Respuesta
+from URG_INGRESO_PACIENTE A
+inner join HIST_EVENTO_DE_ATENCION B on A.SecuenciaIngreso=B.SecuenciaIngreso
+inner join HIST_MOVIMIENTO_ENCA C on B.NoEvento=C.NoEvento
+inner join HIST_MOVIMIENTO_DETA D on C.NoFolio=D.NoFolio
+inner join HIST_PREGUNTA E on D.CodPregunta=E.CodPregunta
+where A.NoUrgencia=@URG and B.NoUrgencia=@URG and C.CodFormato='EP1' order by d.CodPregunta
