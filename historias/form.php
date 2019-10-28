@@ -4,7 +4,7 @@
 	<input type="submit" name="ok" value="cargar">
 	<hr>
 	<?php
-		$ITEM=array("factura","admision","epicrisis");
+		$ITEM=array("factura","admision","epicrisis","anexo_3");
 		foreach($ITEM as $OPTION)
 		{
 			echo '<input type="checkbox" name="PDF[]" value="'.$OPTION.'"> '.$OPTION.'<br>';

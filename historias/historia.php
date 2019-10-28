@@ -1,4 +1,3 @@
-
 <?php
 	/*Conexion SQL_SERVER*/
 	include('../inc/cnn_sql.php');
@@ -14,6 +13,7 @@
 	$B=0;
     $H=3.5;
     $URL_LOGO='../img/logo.jpg';
+    $URL_LOGO_1='../img/colombia.jpg';
     $FACTURA=$_GET['FAC'];
     
     $GRAL_DATA=array();

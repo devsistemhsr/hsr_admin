@@ -1,16 +1,23 @@
 <?php
 
-	$TYPE_SERVER='HOM3';
+	$TYPE_SERVER='HSR';
 
     if($TYPE_SERVER=='HSR')
     {
     	/*Conexion SQL HSR*/
     	$serverName = "192.168.1.84,1500";
     	$connectionInfo = array( "Database"=>"HSR_OLD", "UID"=>"SA", "PWD"=>"Infotec123");
-    	$SQL_SRV = sqlsrv_connect( $serverName, $connectionInfo);
-    	if( !$SQL_SRV ) {
+    	$HEALT_BD = sqlsrv_connect( $serverName, $connectionInfo);
+    	if( !$HEALT_BD ) {
     	    die( print_r( sqlsrv_errors(), true));
     	}
+
+        $serverName = "192.168.1.84,1500";
+        $connectionInfo = array( "Database"=>"INFOTEC", "UID"=>"SA", "PWD"=>"Infotec123");
+        $SALUD_BD = sqlsrv_connect( $serverName, $connectionInfo);
+        if( !$SALUD_BD ) {
+            die( print_r( sqlsrv_errors(), true));
+        }
 	}
 	else
 	{
